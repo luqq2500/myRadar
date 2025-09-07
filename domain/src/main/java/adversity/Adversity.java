@@ -1,6 +1,8 @@
 package adversity;
 
-import adversity.coordinate.Coordinate;
-
-public record Adversity(String mainAdversity, String subAdversity, Coordinate coordinate) {
+public enum Adversity {
+    ROAD,
+    WEATHER,
+    UTILITY,
+    SOCIAL
 }

@@ -1,7 +1,8 @@
 package user;
 
-import adversity.Adversity;
-import adversity.coordinate.Coordinate;
+import adversity.AdversityDetails;
+import adversity.SubAdversity;
+import geo.Coordinate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +17,8 @@ public class userDT {
     public void setUp() throws Exception {
         user = new User("luqq2500");
         Coordinate coordinate = new Coordinate(42.09, 32.05);
-        Adversity adversity = new Adversity("road", "damaged-road", coordinate);
         Description description = new Description("longkang besar bahaya");
-        post = user.post(adversity, description);
+        post = user.post(SubAdversity.ROAD_HAZARD,coordinate , description);
     }
 
     @Test

@@ -1,3 +1,3 @@
-package adversity.coordinate;
+package geo;
 
 public record Coordinate (double longitude, double latitude){}

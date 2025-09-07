@@ -1,6 +1,7 @@
 package user;
 
-import adversity.Adversity;
+import adversity.SubAdversity;
+import geo.Coordinate;
 import post.Post;
 import post.Description;
 import post.vote.Vote;
@@ -21,8 +22,8 @@ public class User {
         this.username = username;
     }
 
-    public Post post(Adversity adversity, Description description){
-        return new Post(userId, adversity ,description);
+    public Post post(SubAdversity subAdversity, Coordinate coordinate, Description description){
+        return new Post(userId, subAdversity, coordinate ,description);
     }
 
     public Vote upVote(Post post) {

@@ -1,7 +1,9 @@
 package post;
 
 import adversity.Adversity;
-import adversity.coordinate.Coordinate;
+import adversity.AdversityDetails;
+import adversity.SubAdversity;
+import geo.Coordinate;
 import post.vote.VoteType;
 
 import java.time.LocalDateTime;
@@ -10,15 +12,17 @@ import java.util.UUID;
 public class Post {
     private final UUID postId;
     private final UUID userId;
-    private final Adversity adversity;
+    private final SubAdversity subAdversity;
+    private final Coordinate coordinate;
     private final Description description;
     private final LocalDateTime postDate;
     private int votes;
 
-    public Post(UUID userId, Adversity adversity, Description description){
+    public Post(UUID userId, SubAdversity subAdversity, Coordinate coordinate, Description description){
         this.postId = UUID.randomUUID();
         this.userId = userId;
-        this.adversity = adversity;
+        this.subAdversity = subAdversity;
+        this.coordinate = coordinate;
         this.description = description;
         this.postDate = LocalDateTime.now();
     }
@@ -33,16 +37,20 @@ public class Post {
         return votes;
     }
 
-    public Coordinate getCoordinate(){
-        return adversity.coordinate();
+    public double getLongitude(){
+        return coordinate.longitude();
     }
 
-    public String getMainAdversity(){
-        return adversity.mainAdversity();
+    public double getLatitude(){
+        return coordinate.latitude();
     }
 
-    public String getSubAdversity(){
-        return adversity.subAdversity();
+    public Adversity getAdversity(){
+        return subAdversity.getMainAdversity();
+    }
+
+    public SubAdversity getSubAdversity(){
+        return subAdversity;
     }
 
     public LocalDateTime getPostDate(){
