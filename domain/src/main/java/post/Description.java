@@ -1,4 +1,4 @@
 package post;
 
-public record PostDescription(String description) {
+public record Description(String description) {
 }
