@@ -1,6 +1,5 @@
 package user;
 
-import adversity.AdversityDetails;
 import adversity.SubAdversity;
 import geo.Coordinate;
 import org.junit.Assert;

@@ -1,7 +1,6 @@
 package post;
 
 import adversity.Adversity;
-import adversity.AdversityDetails;
 import adversity.SubAdversity;
 import geo.Coordinate;
 import post.vote.VoteType;

@@ -1,7 +1,5 @@
 package post;
 
-import adversity.AdversityDetails;
-import adversity.AdversityRepository;
 import adversity.SubAdversity;
 import geo.Coordinate;
 import geo.api.GeoLocator;
