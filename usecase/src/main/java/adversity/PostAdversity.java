@@ -1,10 +1,9 @@
-package post;
+package adversity;
 
-import adversity.SubAdversity;
 import geo.Coordinate;
 import geo.api.GeoLocator;
-import post.api.AdversityPoster;
-import post.spi.PostRepository;
+import adversity.api.AdversityPoster;
+import adversity.spi.AdversityRepository;
 import user.User;
 import user.UserRepository;
 
@@ -12,12 +11,12 @@ import java.util.UUID;
 
 public class PostAdversity implements AdversityPoster {
     private final UserRepository userRepository;
-    private final PostRepository postRepository;
+    private final AdversityRepository adversityRepository;
     private final GeoLocator geoLocator;
 
-    public PostAdversity(UserRepository userRepository, PostRepository postRepository, GeoLocator geoLocator) {
+    public PostAdversity(UserRepository userRepository, AdversityRepository adversityRepository, GeoLocator geoLocator) {
         this.userRepository = userRepository;
-        this.postRepository = postRepository;
+        this.adversityRepository = adversityRepository;
         this.geoLocator = geoLocator;
     }
 
@@ -25,7 +24,7 @@ public class PostAdversity implements AdversityPoster {
     public void post(UUID userId, SubAdversity subAdversity, String description) {
         User user = userRepository.get(userId);
         Coordinate coordinate = geoLocator.getCoordinate();
-        Post post = user.post(subAdversity, coordinate, new Description(description));
-        postRepository.add(post);
+        Adversity adversity = user.post(subAdversity, coordinate, new Description(description));
+        adversityRepository.add(adversity);
     }
 }

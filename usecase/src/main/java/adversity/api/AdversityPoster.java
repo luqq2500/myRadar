@@ -1,4 +1,4 @@
-package post.api;
+package adversity.api;
 
 import adversity.SubAdversity;
 

@@ -1,4 +1,4 @@
-package post.vote;
+package vote;
 
 public class InvalidVote extends RuntimeException {
     public InvalidVote(String message) {

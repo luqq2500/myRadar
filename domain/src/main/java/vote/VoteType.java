@@ -1,4 +1,4 @@
-package post.vote;
+package vote;
 
 public enum VoteType {
     UPVOTE,
