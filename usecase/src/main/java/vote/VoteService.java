@@ -7,6 +7,7 @@ import user.UserRepository;
 import vote.api.IVoteService;
 import vote.spi.VoteRepository;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,67 +24,29 @@ public class VoteService implements IVoteService {
 
     @Override
     public void upVote(UUID userId, UUID adversityId) {
-        Optional<Vote> findVote = voteRepository.find(userId, adversityId);
-        if (findVote.isPresent()) {
-            Vote vote = findVote.get();
-            if (vote.isUpVote()){
-                throw new InvalidVote("Vote has already been submitted.");
-            }if (vote.isDownVote()){
-                undoDownVote(userId, adversityId);
-            }
+        Optional<Vote> previousVote = deletePreviousVote(userId, adversityId);
+        if ((previousVote.isPresent() && previousVote.get().isDownVote()) || previousVote.isEmpty()) {
+            User user = userRepository.get(userId);
+            Adversity adversity = adversityRepository.get(adversityId);
+            Vote vote = user.upVote(adversity);
+            voteRepository.add(vote);
         }
-        User user = userRepository.get(userId);
-        Adversity adversity = adversityRepository.get(adversityId);
-
-        Vote vote = user.upVote(adversity);
-        voteRepository.add(vote);
-    }
-
-    @Override
-    public void undoUpVote(UUID userId, UUID adversityId) {
-        Optional<Vote> findVote = voteRepository.find(userId, adversityId);
-        if (findVote.isEmpty() || !findVote.get().isUpVote()){
-            throw new InvalidVote("Vote has not been submitted.");
-        }
-
-        Vote vote = voteRepository.get(userId, adversityId);
-        Adversity adversity = adversityRepository.get(vote.adversityId());
-        User user = userRepository.get(vote.userId());
-
-        user.undoUpVote(adversity);
-        voteRepository.delete(vote);
     }
 
     @Override
     public void downVote(UUID userId, UUID adversityId) {
-        Optional<Vote> findVote = voteRepository.find(userId, adversityId);
-        if (findVote.isPresent()) {
-            Vote vote = findVote.get();
-            if (vote.isDownVote()){
-                throw new InvalidVote("Vote has already been submitted.");
-            }if (vote.isUpVote()){
-                undoUpVote(userId, adversityId);
-            }
+        Optional<Vote> previousVote = deletePreviousVote(userId, adversityId);
+        if ((previousVote.isPresent() && previousVote.get().isUpVote()) || previousVote.isEmpty()) {
+            User user = userRepository.get(userId);
+            Adversity adversity = adversityRepository.get(adversityId);
+            Vote vote = user.downVote(adversity);
+            voteRepository.add(vote);
         }
-        User user = userRepository.get(userId);
-        Adversity adversity = adversityRepository.get(adversityId);
-
-        Vote vote = user.downVote(adversity);
-        voteRepository.add(vote);
     }
 
-    @Override
-    public void undoDownVote(UUID userId, UUID adversityId) {
+    private Optional<Vote> deletePreviousVote(UUID userId, UUID adversityId) {
         Optional<Vote> findVote = voteRepository.find(userId, adversityId);
-        if (findVote.isEmpty() || !findVote.get().isDownVote()){
-            throw new InvalidVote("Vote has not been submitted.");
-        }
-
-        Vote vote = voteRepository.get(userId, adversityId);
-        Adversity adversity = adversityRepository.get(vote.adversityId());
-        User user = userRepository.get(vote.userId());
-
-        user.undoDownVote(adversity);
-        voteRepository.delete(vote);
+        findVote.ifPresent(voteRepository::delete);
+        return findVote;
     }
 }
