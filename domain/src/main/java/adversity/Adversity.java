@@ -33,7 +33,7 @@ public class Adversity {
         if (voteType == VoteType.UPVOTE){
             upvotes++;
         } else if (voteType == VoteType.DOWNVOTE){
-            downvotes--;
+            downvotes++;
         }
         calculateNewVoteScore();
     }
@@ -42,13 +42,13 @@ public class Adversity {
         if (voteType == VoteType.UPVOTE){
             upvotes--;
         }else if (voteType == VoteType.DOWNVOTE){
-            downvotes++;
+            downvotes--;
         }
         calculateNewVoteScore();
     }
 
     public void calculateNewVoteScore(){
-        voteScore = upvotes + downvotes;
+        voteScore = upvotes - downvotes;
     }
     public int getVoteScore(){
         return voteScore;

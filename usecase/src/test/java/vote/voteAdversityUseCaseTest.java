@@ -20,6 +20,7 @@ import vote.spi.VoteRepository;
 public class voteAdversityUseCaseTest {
     private IVoteService voteService;
     private VoteRepository voteRepository;
+    private AdversityRepository adversityRepository;
     private User testUser1;
     private User testUser2;
     private Adversity testPostedAdversity;
@@ -27,7 +28,7 @@ public class voteAdversityUseCaseTest {
     @Before
     public void setUp() {
         UserRepository userRepository = new InMemoryUserRepository();
-        AdversityRepository adversityRepository = new InMemoryAdversityRepository();
+        adversityRepository = new InMemoryAdversityRepository();
         voteRepository = new InMemoryVoteRepository();
         GeoLocator geoLocator = new MockGeoLocator();
 
@@ -45,68 +46,79 @@ public class voteAdversityUseCaseTest {
     }
 
     @Test
-    public void upVoteOnce_shouldNotThrowException() {
+    public void upVoteOnce_voteScoreShouldBeOne() {
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
+        Assert.assertEquals(1, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void downVoteOnce_shouldNotThrowException() {
+    public void downVoteOnce_voteScoreShouldBeNegativeOne() {
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
+        Assert.assertEquals(-1, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void upVoteTwice_upVoteShouldBeDeleted(){
+    public void upVoteTwice_upVoteShouldBeDeletedAndVoteScoreShouldBeZero() {
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         Assert.assertNull(voteRepository.get(testUser1.getId(), testPostedAdversity.getId()));
+        Assert.assertEquals(0, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void downVoteTwice_downVoteShouldBeDeleted(){
+    public void downVoteTwice_downVoteShouldBeDeletedAndVoteScoreShouldBeZero() {
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         Assert.assertNull(voteRepository.get(testUser1.getId(), testPostedAdversity.getId()));
+        Assert.assertEquals(0, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void upVoteThreeTimes_upVoteShouldBeNotNull(){
+    public void upVoteThreeTimes_voteScoreShouldBeOne() {
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         Assert.assertNotNull(voteRepository.get(testUser1.getId(), testPostedAdversity.getId()));
+        Assert.assertEquals(1, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void downVoteThreeTimes_downVoteShouldBeNotNull(){
+    public void downVoteThreeTimes_voteScoreShouldBeNegativeOne() {
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         Assert.assertNotNull(voteRepository.get(testUser1.getId(), testPostedAdversity.getId()));
+        Assert.assertEquals(-1, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void upVote_thenDownVote_voteShouldBeDownVote(){
+    public void upVote_thenDownVote_voteShouldBeDownVoteAndVoteScoreShouldBeNegativeOne() {
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         Assert.assertTrue(voteRepository.get(testUser1.getId(), testPostedAdversity.getId()).isDownVote());
+        Assert.assertEquals(-1, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
+
     }
 
     @Test
-    public void downVote_thenUpVote_voteShouldBeUpVote(){
+    public void downVote_thenUpVote_voteShouldBeUpVoteAndVoteScoreShouldBePositiveOne() {
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         Assert.assertTrue(voteRepository.get(testUser1.getId(), testPostedAdversity.getId()).isUpVote());
+        Assert.assertEquals(1, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void twoNewUpVotes_shouldNotThrowException() {
+    public void twoNewUpVotes_voteScoreShouldBeTwo() {
         voteService.upVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.upVote(testUser2.getId(), testPostedAdversity.getId());
+        Assert.assertEquals(2, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 
     @Test
-    public void twoNewDownVotes_shouldNotThrowException() {
+    public void twoNewDownVotes_voteScoreShouldBeNegativeTwo() {
         voteService.downVote(testUser1.getId(), testPostedAdversity.getId());
         voteService.downVote(testUser2.getId(), testPostedAdversity.getId());
+        Assert.assertEquals(-2, adversityRepository.get(testPostedAdversity.getId()).getVoteScore());
     }
 }
