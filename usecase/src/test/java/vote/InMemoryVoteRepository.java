@@ -35,4 +35,10 @@ public class InMemoryVoteRepository implements VoteRepository {
     public void delete(Vote vote) {
         votes.remove(vote);
     }
+
+    @Override
+    public void update(Vote vote) {
+        votes.remove(get(vote.adversityId(), vote.userId()));
+        votes.add(vote);
+    }
 }

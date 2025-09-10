@@ -21,18 +21,21 @@ public class User {
         return new Adversity(id, subAdversity, coordinate ,description);
     }
     public Vote upVote(Adversity adversity){
-        adversity.addVote(VoteType.UPVOTE);
+        adversity.applyVote(VoteType.UPVOTE);
         return new Vote(adversity.getId(), id, VoteType.UPVOTE, LocalDateTime.now());
     }
     public Vote downVote(Adversity adversity){
-        adversity.addVote(VoteType.DOWNVOTE);
+        adversity.applyVote(VoteType.DOWNVOTE);
         return new Vote(adversity.getId(), id, VoteType.DOWNVOTE, LocalDateTime.now());
     }
     public void undoUpVote(Adversity adversity){
-        adversity.removeVote(VoteType.UPVOTE);
+        adversity.undoVote(VoteType.UPVOTE);
     }
     public void undoDownVote(Adversity adversity){
-        adversity.removeVote(VoteType.DOWNVOTE);
+        adversity.undoVote(VoteType.DOWNVOTE);
     }
     public UUID getId(){return id;}
+    public void changeUsername(String newUsername){
+        this.username = newUsername;
+    }
 }

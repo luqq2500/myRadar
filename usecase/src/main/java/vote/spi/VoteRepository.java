@@ -11,4 +11,5 @@ public interface VoteRepository {
     Vote get(UUID userId, UUID adversityId);
     Optional<Vote> find(UUID userId, UUID adversityId);
     void delete(Vote vote);
+    void update(Vote vote);
 }

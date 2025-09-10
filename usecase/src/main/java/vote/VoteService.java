@@ -24,7 +24,7 @@ public class VoteService implements IVoteService {
     public void upVote(UUID userId, UUID adversityId) {
         User user = userRepository.get(userId);
         Adversity adversity = adversityRepository.get(adversityId);
-        Optional<Vote> previousVote = deletePreviousVote(user, adversity);
+        Optional<Vote> previousVote = undoPreviousVote(user, adversity);
         if ((previousVote.isPresent() && previousVote.get().isDownVote()) || previousVote.isEmpty()) {
             Vote vote = user.upVote(adversity);
             voteRepository.add(vote);
@@ -35,14 +35,14 @@ public class VoteService implements IVoteService {
     public void downVote(UUID userId, UUID adversityId) {
         User user = userRepository.get(userId);
         Adversity adversity = adversityRepository.get(adversityId);
-        Optional<Vote> previousVote = deletePreviousVote(user, adversity);
+        Optional<Vote> previousVote = undoPreviousVote(user, adversity);
         if ((previousVote.isPresent() && previousVote.get().isUpVote()) || previousVote.isEmpty()) {
             Vote vote = user.downVote(adversity);
             voteRepository.add(vote);
         }
     }
 
-    private Optional<Vote> deletePreviousVote(User user, Adversity adversity) {
+    private Optional<Vote> undoPreviousVote(User user, Adversity adversity) {
         Optional<Vote> previousVote = voteRepository.find(user.getId(), adversity.getId());
         if (previousVote.isPresent()){
             Vote vote = previousVote.get();
@@ -51,7 +51,6 @@ public class VoteService implements IVoteService {
             if (vote.isUpVote()){
                 user.undoUpVote(adversity);}
             voteRepository.delete(vote);
-        }
-        return previousVote;
+        }return previousVote;
     }
 }
