@@ -1,4 +1,4 @@
-package adversity;
+package event;
 
 public enum MainAdversity {
     ROAD,

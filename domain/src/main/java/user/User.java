@@ -1,9 +1,9 @@
 package user;
 
-import adversity.SubAdversity;
+import event.SubAdversity;
 import geo.Coordinate;
-import adversity.Adversity;
-import adversity.Description;
+import event.Event;
+import event.Description;
 import vote.Vote;
 import vote.VoteType;
 
@@ -17,22 +17,22 @@ public class User {
         this.id = UUID.randomUUID();
         this.username = username;
     }
-    public Adversity post(SubAdversity subAdversity, Coordinate coordinate, Description description){
-        return new Adversity(id, subAdversity, coordinate ,description);
+    public Event post(SubAdversity subAdversity, Coordinate coordinate, Description description){
+        return new Event(id, subAdversity, coordinate ,description);
     }
-    public Vote upVote(Adversity adversity){
-        adversity.applyVote(VoteType.UPVOTE);
-        return new Vote(adversity.getId(), id, VoteType.UPVOTE, LocalDateTime.now());
+    public Vote upVote(Event event){
+        event.addVote(VoteType.UPVOTE);
+        return new Vote(event.getId(), id, VoteType.UPVOTE, LocalDateTime.now());
     }
-    public Vote downVote(Adversity adversity){
-        adversity.applyVote(VoteType.DOWNVOTE);
-        return new Vote(adversity.getId(), id, VoteType.DOWNVOTE, LocalDateTime.now());
+    public Vote downVote(Event event){
+        event.addVote(VoteType.DOWNVOTE);
+        return new Vote(event.getId(), id, VoteType.DOWNVOTE, LocalDateTime.now());
     }
-    public void undoUpVote(Adversity adversity){
-        adversity.undoVote(VoteType.UPVOTE);
+    public void undoUpVote(Event event){
+        event.removeVote(VoteType.UPVOTE);
     }
-    public void undoDownVote(Adversity adversity){
-        adversity.undoVote(VoteType.DOWNVOTE);
+    public void undoDownVote(Event event){
+        event.removeVote(VoteType.DOWNVOTE);
     }
     public UUID getId(){return id;}
     public void changeUsername(String newUsername){

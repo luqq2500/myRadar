@@ -1,4 +1,4 @@
-package adversity;
+package event;
 
 public class InvalidPost extends RuntimeException {
     public InvalidPost(String message) {

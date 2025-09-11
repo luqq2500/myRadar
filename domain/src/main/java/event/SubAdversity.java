@@ -1,4 +1,4 @@
-package adversity;
+package event;
 
 public enum SubAdversity {
     ROAD_HAZARD(MainAdversity.ROAD),

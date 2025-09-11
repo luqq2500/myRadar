@@ -1,6 +1,5 @@
 package vote;
 
-import adversity.Adversity;
 import vote.spi.VoteRepository;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class InMemoryVoteRepository implements VoteRepository {
     @Override
     public Vote get(UUID userId, UUID adversityId) {
         return votes.stream()
-                .filter(vote -> vote.adversityId().equals(adversityId))
+                .filter(vote -> vote.eventId().equals(adversityId))
                 .filter(vote -> vote.userId().equals(userId))
                 .findFirst()
                 .orElse(null);
@@ -27,7 +26,7 @@ public class InMemoryVoteRepository implements VoteRepository {
     public Optional<Vote> find(UUID userId, UUID adversityId) {
         return votes.stream()
                 .filter(vote -> vote.userId().equals(userId))
-                .filter(vote -> vote.adversityId().equals(adversityId))
+                .filter(vote -> vote.eventId().equals(adversityId))
                 .findFirst();
     }
 
@@ -38,7 +37,7 @@ public class InMemoryVoteRepository implements VoteRepository {
 
     @Override
     public void update(Vote vote) {
-        votes.remove(get(vote.adversityId(), vote.userId()));
+        votes.remove(get(vote.eventId(), vote.userId()));
         votes.add(vote);
     }
 }

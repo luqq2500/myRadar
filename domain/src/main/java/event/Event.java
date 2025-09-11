@@ -1,12 +1,14 @@
-package adversity;
+package event;
 
 import geo.Coordinate;
+import user.User;
+import vote.Vote;
 import vote.VoteType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class Adversity {
+public class Event {
     private final UUID id;
     private final UUID userId;
     private final SubAdversity subAdversity;
@@ -16,7 +18,7 @@ public class Adversity {
     private int upvotes;
     private int downvotes;
 
-    public Adversity(UUID userId, SubAdversity subAdversity, Coordinate coordinate, Description description){
+    public Event(UUID userId, SubAdversity subAdversity, Coordinate coordinate, Description description){
         this.id = UUID.randomUUID();
         this.userId = userId;
         this.subAdversity = subAdversity;
@@ -26,14 +28,13 @@ public class Adversity {
         this.upvotes = 0;
         this.downvotes = 0;
     }
-    public void applyVote(VoteType voteType){
+    public void addVote(VoteType voteType){
         if (voteType == VoteType.UPVOTE){
             upvotes++;}
         else if (voteType == VoteType.DOWNVOTE){
-            downvotes++;
-        }
+            downvotes++;}
     }
-    public void undoVote(VoteType voteType){
+    public void removeVote(VoteType voteType){
         if (voteType == VoteType.UPVOTE){
             upvotes--;}
         else if (voteType == VoteType.DOWNVOTE){

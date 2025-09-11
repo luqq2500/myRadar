@@ -3,7 +3,7 @@ package vote;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record Vote(UUID adversityId, UUID userId, VoteType voteType, LocalDateTime createdAt){
+public record Vote(UUID eventId, UUID userId, VoteType voteType, LocalDateTime createdAt){
     public boolean isUpVote(){
         return voteType.equals(VoteType.UPVOTE);
     }

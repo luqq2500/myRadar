@@ -1,77 +1,77 @@
 package user;
 
-import adversity.SubAdversity;
+import event.SubAdversity;
 import geo.Coordinate;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import adversity.Description;
-import adversity.Adversity;
+import event.Description;
+import event.Event;
 
 public class userDT {
     private User user;
-    private Adversity adversity;
+    private Event event;
 
     @Before
     public void setUp() throws Exception {
         user = new User("luqq2500");
         Coordinate coordinate = new Coordinate(42.09, 32.05);
         Description description = new Description("longkang besar bahaya");
-        adversity = user.post(SubAdversity.ROAD_HAZARD,coordinate , description);
+        event = user.post(SubAdversity.ROAD_HAZARD,coordinate , description);
     }
 
     @Test
     public void upVoteOnce_voteShouldBeOne(){
-        user.upVote(adversity);
-        Assert.assertEquals(1, adversity.getVoteScore());
-        System.out.println(adversity.getVoteScore());
+        user.upVote(event);
+        Assert.assertEquals(1, event.getVoteScore());
+        System.out.println(event.getVoteScore());
     }
 
     @Test
     public void downVoteOnce_voteShouldBeMinusOne(){
-        user.downVote(adversity);
-        Assert.assertEquals(-1, adversity.getVoteScore());
-        System.out.println(adversity.getVoteScore());
+        user.downVote(event);
+        Assert.assertEquals(-1, event.getVoteScore());
+        System.out.println(event.getVoteScore());
     }
 
     @Test
     public void upVoteTwice_voteShouldBeTwo(){
-        user.upVote(adversity);
-        user.upVote(adversity);
-        Assert.assertEquals(2, adversity.getVoteScore());
-        System.out.println(adversity.getVoteScore());
+        user.upVote(event);
+        user.upVote(event);
+        Assert.assertEquals(2, event.getVoteScore());
+        System.out.println(event.getVoteScore());
     }
 
     @Test
     public void downVoteTwice_voteShouldBeTwo(){
-        user.downVote(adversity);
-        user.downVote(adversity);
-        Assert.assertEquals(-2, adversity.getVoteScore());
-        System.out.println(adversity.getVoteScore());
+        user.downVote(event);
+        user.downVote(event);
+        Assert.assertEquals(-2, event.getVoteScore());
+        System.out.println(event.getVoteScore());
     }
 
     @Test
     public void downVoteTwice_upVoteThreeTimes_voteScoreShouldBeOne(){
-        user.downVote(adversity);
-        user.downVote(adversity);
-        user.upVote(adversity);
-        user.upVote(adversity);
-        user.upVote(adversity);
-        Assert.assertEquals(1, adversity.getVoteScore());
+        user.downVote(event);
+        user.downVote(event);
+        user.upVote(event);
+        user.upVote(event);
+        user.upVote(event);
+        Assert.assertEquals(1, event.getVoteScore());
     }
 
     @Test
     public void upVoteOnce_andUndoUpVote_voteScoreShouldBeZero(){
-        user.upVote(adversity);
-        user.undoUpVote(adversity);
-        Assert.assertEquals(0, adversity.getVoteScore());
+        user.upVote(event);
+        user.undoUpVote(event);
+        Assert.assertEquals(0, event.getVoteScore());
     }
 
     @Test
     public void upVoteOnce_undoUpVoteOnce_andUpVoteOnceAgain_voteScoreShouldBeOne(){
-        user.upVote(adversity);
-        user.undoUpVote(adversity);
-        user.upVote(adversity);
-        Assert.assertEquals(1, adversity.getVoteScore());
+        user.upVote(event);
+        user.undoUpVote(event);
+        user.upVote(event);
+        Assert.assertEquals(1, event.getVoteScore());
     }
 }
